@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layouts/layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>Homepage</title>
+  </head>
+  <body>
+    <!-- CONTENT -->
+    <main layout:fragment="main-layout-content">
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>Dashboard</li>
+            <li><i class="bx bx-chevron-right"></i></li>
+            <li><a class="active" href="#">Home</a></li>
+          </ul>
+        </div>
+        <button class="right"> <i class="bx bx-plus"></i>Create Staff</button>
+      </div>
+      <ul class="box-info">
+        <li>
+          <i class="bx bxs-group"></i>
+          <span>
+            <h3 th:text="${staff_count}">N/A</h3>
+            <p>Staffs Registered</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bx-git-pull-request"></i>
+          <span>
+            <h3 th:text="${leave_request_count}">N/A</h3>
+            <p>Leave Request</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bxs-group"></i>
+          <span>
+            <h3>N/A</h3>
+            <p>Staffs Registered</p>
+          </span>
+        </li>
+      </ul>
+
+      <div class="new-staffs p-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="font-weight-sm">Newly added staff</h6>
+          <a id="view-staff" href="javascript:void(0);" th:data-page="staff.html">View all</a>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">S/N</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Staff ID</th>
+              <th scope="col">Staff Email</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="staff, iteration : ${staffs}">
+              <th scope="row" th:text="${iteration.count}">1</th>
+              <td th:text="${staff.firstname + ' ' + staff.lastname}">Mark</td>
+              <td th:text="${staff.id}">Otto</td>
+              <td th:text="${staff.email}">@mdo</td>
+              <td class="d-flex justify-content-around">
+                <a class="text-primary" href="#"
+                  ><i class="bx bxs-file-find"></i
+                ></a>
+                <a class="text-secondary" href="#"
+                  ><i class="bx bxs-edit"></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

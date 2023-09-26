@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layouts/layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>Homepage</title>
+  </head>
+  <body>
+    <!-- CONTENT -->
+    <main class="staff" id="staff-content" layout:fragment="main-layout-content">
+      <div class="head-title">
+        <div class="left">
+          <h1>Staff</h1>
+          <ul class="breadcrumb">
+            <li>Dashboard</li>
+            <li><i class="bx bx-chevron-right"></i></li>
+            <li><a class="active" href="#">Staff</a></li>
+          </ul>
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="right btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <i class="bx bx-plus"></i> Create Staff
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Staff</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="mt-3  shadow p-3 bg-body rounded">
+                  <form id="staff-form" th:action="@{/admin/create-staff}" th:object="${staffDTO}" method="post">
+                    <div class="row row-cols-2 gy-2 p-2 ">
+                      <div class="col">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstname" th:field="*{firstname}"
+                               placeholder="enter firstname">
+                      </div>
+                      <div class="col">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" th:field="*{lastname}"
+                               placeholder="enter lastname">
+                      </div>
+                    </div>
+                    <div class="row row-cols-2 gy-2 p-2">
+                      <div class="col">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="enter email">
+                      </div>
+                      <div class="col">
+                        <label for="number" class="form-label">Phone</label>
+                        <div id="number" class="d-flex">
+                          <select class="form-select" aria-label="Default select example"
+                                  style="width:80px; margin-right: 8px" th:field="*{phone.countryCode}" >
+                            <option value="+234" selected>NGN</option>
+                            <option value="+44" >USA</option>
+                          </select>
+                          <input type="text" class="form-control w-100" th:field="*{phone.number}"
+                                 placeholder="enter phone">
+                        </div>
+                      </div>
+                    </div>
+                    <div class=" ">
+                      <div class="m">
+                        <label for="address" class="form-label">Address</label>
+                        <div id="address" class="row row-cols-2 gy-2">
+                          <div class="col">
+                            <input type="text" class="form-control col " id="address.zipCode"
+                                   th:field="*{address.zipCode}"
+                                   placeholder="enter zip code">
+                          </div>
+                          <div class="col">
+                            <input type="text" class="form-control col" id="address.street"
+                                   th:field="*{address.street}"
+                                   placeholder="enter address street">
+                          </div>
+                          <div class="col">
+                            <input type="text" class="form-control col" id="address.city"
+                                   th:field="*{address.city}"
+                                   placeholder="enter address city">
+                          </div>
+                          <div class="col">
+                            <input type="text" class="form-control col" id="address.country"
+                                   th:field="*{address.country}"
+                                   placeholder="enter address country">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row p-2">
+                      <label for="rolelist">Roles</label>
+                      <div id="rolelist" class="btn-group w-50 gap-5">
+                        <li class="list-style-none d-flex gap-2" th:each="role : ${staff_roles}">
+                          <input type="checkbox" th:field="*{roles}" th:value="${role.name}" th:id="${'role-' + role.id}"/>
+                          <label th:for="${'role-' + role.id}" th:text="${role.name}"></label><br/>
+                        </li>
+                      </div>
+                    </div>
+                    <div class="row p-2 text-center">
+                      <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Staff list container -->
+      <div class="container" id="staff-list-container">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">S/N</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Staff ID</th>
+              <th scope="col">Staff Email</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Use Thymeleaf to iterate and populate staff data -->
+            <tr th:each="staff, iteration : ${staffs}">
+              <td th:text="${iteration.count}"></td>
+              <td th:text="${staff.firstname + ' ' + staff.lastname}"></td>
+              <td th:text="${staff.id}"></td>
+              <td th:text="${staff.email}"></td>
+              <td class="d-flex justify-content-around">
+                <a class="text-primary" href="#"
+                  ><i class="bx bxs-file-find"></i
+                ></a>
+                <a class="text-secondary" href="#"
+                  ><i class="bx bxs-edit"></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer
+        class="pagination bg-light p-2 text-md d-flex align-content-center justify-content-between"
+      >
+        <div class="pagination-details d-grid text-center">
+          Total Items [[${totalItems}]] : Page [[${currentPage}]] of
+          [[${totalPages}]]
+        </div>
+        <div class="page" aria-label="Page navigation example ">
+          <!-- Add your pagination links here using Thymeleaf -->
+            <ul
+              class="d-flex justify-content-around align-items-center gap-2"
+            >
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  th:if="${currentPage > 1}"
+                  th:href="@{/admin/staffs?page=1}"
+                  >First</a
+                >
+                <span th:unless="${currentPage > 1}">First</span>
+              </li>
+              <li class="page-item">
+                <a
+                  th:if="${currentPage > 1}"
+                  th:href="@{'/admin/staffs?page=' + ${currentPage - 1}}"
+                  >Previous</a
+                >
+                <span th:unless="${currentPage > 1}">Previous</span>
+              </li>
+              <li class="page-item">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                  <a
+                    th:if="${i != currentPage}"
+                    th:href="@{'/admin/staffs?page=' + ${i}}"
+                    >[[${i}]]</a
+                  >
+                  <span th:unless="${i != currentPage}">[[${i}]]</span>
+                </span>
+              </li>
+              <li class="page-item">
+                <a
+                  th:if="${currentPage < totalPages}"
+                  th:href="@{'/admin/staffs?page=' + ${currentPage + 1}}"
+                  >Next</a
+                >
+                <span th:unless="${currentPage < totalPages}">Next</span>
+              </li>
+              <li class="page-item">
+                <a
+                  th:if="${currentPage < totalPages}"
+                  th:href="@{'/admin/staffs?page=' + ${totalPages}}"
+                  >Last</a
+                >
+                <span th:unless="${currentPage < totalPages}">Last</span>
+              </li>
+            </ul>
+          </div>
+      </footer>
+    </main>
+  </body>
+</html>
