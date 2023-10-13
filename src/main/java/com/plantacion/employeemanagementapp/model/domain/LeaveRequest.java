@@ -1,5 +1,6 @@
 package com.plantacion.employeemanagementapp.model.domain;
 
+import com.plantacion.employeemanagementapp.model.enums.LeaveApproval;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,8 +9,20 @@ public class LeaveRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String requestBody;
-    private String requestTitle;
+    private String leaveBody;
+    private String leaveSubject;
+
+    @Enumerated(EnumType.STRING)
+    private LeaveApproval leaveApproval;
+
+    public LeaveApproval getLeaveApproval() {
+        return leaveApproval;
+    }
+
+    public void setLeaveApproval(LeaveApproval leaveApproval) {
+        this.leaveApproval = leaveApproval;
+    }
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
@@ -22,20 +35,20 @@ public class LeaveRequest {
         this.id = id;
     }
 
-    public String getRequestBody() {
-        return requestBody;
+    public String getLeaveBody() {
+        return leaveBody;
     }
 
-    public void setRequestBody(String requestBody) {
-        this.requestBody = requestBody;
+    public void setLeaveBody(String leaveBody) {
+        this.leaveBody = leaveBody;
     }
 
-    public String getRequestTitle() {
-        return requestTitle;
+    public String getLeaveSubject() {
+        return leaveSubject;
     }
 
-    public void setRequestTitle(String requestTitle) {
-        this.requestTitle = requestTitle;
+    public void setLeaveSubject(String leaveSubject) {
+        this.leaveSubject = leaveSubject;
     }
 
     public Staff getStaff() {

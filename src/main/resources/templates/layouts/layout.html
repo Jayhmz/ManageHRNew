@@ -29,8 +29,8 @@
                 <span class="text">Staffs</span>
             </a>
         </li>
-        <li>
-            <a th:href="@{/admin/leave-request}">
+        <li id="leave-request">
+            <a href="javascript:void(0);" th:data-page="leave-request.html">
                 <i class="bx bx-git-pull-request"></i>
                 <span class="text">Leave Request</span>
             </a>
@@ -104,5 +104,6 @@
 <script th:src="@{/js/action.js}"></script>
 <script th:src="@{/js/pageloader.js}"></script>
 <script th:src="@{/js/pagination.js}"></script>
+<script th:src="@{/js/time-record.js}"></script>
 </body>
 </html>

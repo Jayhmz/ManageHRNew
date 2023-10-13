@@ -1,6 +1,6 @@
 package com.plantacion.employeemanagementapp.controller;
 
-import com.plantacion.employeemanagementapp.model.enums.RoleType;
+import com.plantacion.employeemanagementapp.service.TimeRecordService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,12 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/app")
 public class AppController {
+
+    private final TimeRecordService timeRecordService;
+
+    public AppController(TimeRecordService timeRecordService) {
+        this.timeRecordService = timeRecordService;
+    }
 
     @GetMapping
     public String homepage(Authentication authentication) {
@@ -28,5 +34,18 @@ public class AppController {
     @GetMapping("/home")
     public String showHomepage(){
         return "homepage";
+    }
+
+    @GetMapping("/time-in")
+    @ResponseBody
+    public String processTimeIn(Principal principal){
+        timeRecordService.signInTime(principal.getName());
+        return "staff resumes";
+    }
+    @GetMapping("/time-out")
+    @ResponseBody
+    public String processTimeOut(Principal principal){
+        timeRecordService.signOutTime(principal.getName());
+        return "staff takes a break";
     }
 }

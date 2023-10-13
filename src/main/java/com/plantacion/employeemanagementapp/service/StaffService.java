@@ -5,6 +5,7 @@ import com.plantacion.employeemanagementapp.model.dto.StaffDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface StaffService {
@@ -12,9 +13,8 @@ public interface StaffService {
     Staff findStaffByEmail(String email);
     boolean adminCreateStaff(StaffDTO staffDTO);
     List<Staff> adminGetAllStaff();
+    List<Staff> adminGetRecentTenStaff();
     int registeredStaffCount();
-    int leaveRequestCount();
-
     Page getPaginatedStaffs(Pageable pageable);
 
 

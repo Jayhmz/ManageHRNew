@@ -17,6 +17,7 @@ public class AppSecurityConfiguration {
     private final CreateUserServiceImpl service;
 
     private String[] WHITELIST = {"/auth/register", "/auth/registration"};
+    private String[] TIME_WHITELIST = {"/app/time-in", "/app/time-out"};
 
     public AppSecurityConfiguration(CreateUserServiceImpl service) {
         this.service = service;
@@ -30,6 +31,7 @@ public class AppSecurityConfiguration {
                         .requestMatchers(WHITELIST).permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers("/app/home").hasAnyAuthority("STAFF")
+                        .requestMatchers(TIME_WHITELIST).hasAnyAuthority("STAFF", "SUPER_ADMIN")
                         .anyRequest().authenticated()
         );
         http.userDetailsService(service);
@@ -46,5 +48,6 @@ public class AppSecurityConfiguration {
                 .logoutSuccessUrl("/auth/login").permitAll());
         return http.build();
     }
+
 
 }

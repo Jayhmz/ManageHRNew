@@ -14,6 +14,7 @@ import com.plantacion.employeemanagementapp.model.enums.RoleType;
 import com.plantacion.employeemanagementapp.repository.StaffRepository;
 import com.plantacion.employeemanagementapp.service.RoleService;
 import com.plantacion.employeemanagementapp.service.StaffService;
+import com.plantacion.employeemanagementapp.service.TimeRecordService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +30,13 @@ public class staffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final TimeRecordService timeRecordService;
 
-    public staffServiceImpl(StaffRepository staffRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public staffServiceImpl(StaffRepository staffRepository, RoleService roleService, PasswordEncoder passwordEncoder, TimeRecordService timeRecordService) {
         this.staffRepository = staffRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.timeRecordService = timeRecordService;
     }
 
     @Override
@@ -97,13 +100,13 @@ public class staffServiceImpl implements StaffService {
     }
 
     @Override
-    public int registeredStaffCount() {
-        return (int) staffRepository.count();
+    public List<Staff> adminGetRecentTenStaff() {
+        return staffRepository.findLast10Rows();
     }
 
     @Override
-    public int leaveRequestCount() {
-        return 0;
+    public int registeredStaffCount() {
+        return (int) staffRepository.count();
     }
 
     @Override
